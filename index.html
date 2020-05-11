@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<!-- <html manifest="offline.manifest"> -->
+<head>
+	<title>Last</title>
+	<link rel="stylesheet" type="text/css" href="./styles.css">	
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+	<link rel="apple-touch-icon" href="/icons8-circled-q-yellow-background.png"> -->
+</head>
+<body>
+	<p></p><br>
+
+	<button id="ateButton">Ate</button><p id="ateDate">7:00 Saturday</p><br>
+	
+	<button id="showerButton">Shower</button><p id="showerDate">Friday 5-8</p><br>
+
+	<button>Water plants</button><p>Saturday 5-9</p><br>
+
+	<button>Shave</button><p>Friday 5-8</p><br>
+
+	<button>Call Mom</button><p>Sunday May 10</p><br>
+
+	<button>Call Dad</button><p>10 days ago</p><br>
+
+	<button>Cut hair</button><p>April 19</p><br>
+
+	<script type="text/javascript">
+		let d = new Date();
+		const todaysDate = document.getElementsByTagName('p')[0];
+		const ateButton = document.getElementById('ateButton');
+		const ateDate = document.getElementById('ateDate');
+		const showerButton = document.getElementById('showerButton');
+		const showerDate = document.getElementById('showerDate');
+		const buttons = document.getElementsByTagName('button');
+		const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+		todaysDate.innerHTML = `Today is ${days[d.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+
+		let lastArray;
+		if (localStorage.getItem('last')) {
+			console.log('localStorage already existed');
+			lastArray = JSON.parse(localStorage.getItem('last'));
+			lastArray.forEach((item, index) => {
+				buttons[index].nextSibling.innerHTML = item;
+			})
+		} else {
+			lastArray = [
+				"7:00 Saturday",
+				"Friday 5-8",
+				"Saturday 5-9",
+				"Friday 5-8",
+				"Saturday 5-9",
+				"Tuesday 4-25",
+				"Sunday 4-19"
+			];
+			localStorage.setItem('last', JSON.stringify(lastArray));
+		}
+		//event listeners for all the buttons except the first one because the first button has a different format than the others
+		Object.keys(buttons).forEach(item => {
+			// console.log(item)
+			buttons[item].addEventListener('click', () => {
+				// console.log(buttons[item]);
+				// console.log(buttons[item].nextSibling.innerHTML);
+				let dates = new Date();
+				buttons[item].nextSibling.innerHTML = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				lastArray[item] = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				localStorage.setItem('last', JSON.stringify(lastArray));
+			})
+		})
+
+		//event listener for the first button
+		ateButton.addEventListener('click', () => {
+			let date = new Date();
+			let hour;
+			if (date.getHours() > 12) {
+				hour = date.getHours() - 12;
+			} else {
+				hour = date.getHours();
+			}
+			ateDate.innerHTML = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
+			lastArray[0] = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
+			localStorage.setItem('last', JSON.stringify(lastArray));
+		})		
+
+	</script>
+</body>
+</html>
