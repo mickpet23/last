@@ -37,8 +37,7 @@
 
 		todaysDate.innerHTML = `Today is ${days[d.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
 
-		//note: everything above works in iphone
-
+		//initial setup for localStorage or load saved data
 		let lastArray;
 		if (localStorage.getItem('last')) {
 			console.log('localStorage already existed');
@@ -59,33 +58,53 @@
 			localStorage.setItem('last', JSON.stringify(lastArray));
 		}
 
-		//event listeners for all the buttons except the first one because the first button has a different format than the others
-		Object.keys(buttons).forEach(item => {
+		//version2: event listeners for all the buttons except the first one because the first button has a different formate than the others. Filter is used to skip the first button. Have to use Object.keys because buttons is not an array so I can't use a for loop method on it.
+		Object.keys(buttons).filter(ind => ind>=1).forEach(item => {
 			// console.log(item)
 			buttons[item].addEventListener('click', () => {
 				// console.log(buttons[item]);
 				// console.log(buttons[item].nextSibling.innerHTML);
 				let dates = new Date();
 				buttons[item].nextSibling.innerHTML = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				//save data to localStorage
 				lastArray[item] = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
 				localStorage.setItem('last', JSON.stringify(lastArray));
 			})
 		})
 
-		//event listener for the first button
+		//event listener for the first button version 2		
 		ateButton1.addEventListener('click', () => {
 			let date = new Date();
 			let hour;
+			//default is 24 hour system. Change to 12 hour system (e.g. 18:30 -> 6:30)
 			if (date.getHours() > 12) {
 				hour = date.getHours() - 12;
 			} else {
 				hour = date.getHours();
 			}
-			ateDate1.innerHTML = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
-			lastArray[0] = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
-			localStorage.setItem('last', JSON.stringify(lastArray));
-		})		
-
+			//change 6:7 -> 6:07
+			let minutes;
+			if (date.getMinutes() < 10) {
+				minutes = `0${date.getMinutes()}`;
+			} else {
+				minutes = date.getMinutes();
+			}
+			//generate new date and prompt user before submitting
+			let newDate = `${hour}:${minutes} ${days[date.getDay()]}`
+			let confirmPrompt = prompt("The last time you ate was", newDate);
+			if (confirmPrompt == null || confirmPrompt == "") {
+				//user hits cancel so don't change anything
+				newDate = ateDate1.innerHTML;
+			} else {
+				//user hits ok so change the data
+				newDate = confirmPrompt;
+			}
+			//make changes go live
+			ateDate1.innerHTML = newDate;
+			//save data to localStorage
+			lastArray[0] = newDate;
+			localStorage.setItem('last', JSON.stringify(lastArray));			
+		})
 	</script>
 </body>
 </html>
