@@ -22,7 +22,7 @@
 
 	<button>Call Mom</button><p>Sunday May 10</p><br>
 
-	<button>Call Dad</button><p>19 days ago</p><br>
+	<button>Call Dad</button><p>11 days ago</p><br>
 
 	<button>Cut hair</button><p>April 19</p><br>
 
@@ -37,52 +37,54 @@
 
 		todaysDate.innerHTML = `Today is ${days[d.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
 
-		// let lastArray;
-		// if (localStorage.getItem('last')) {
-		// 	console.log('localStorage already existed');
-		// 	lastArray = JSON.parse(localStorage.getItem('last'));
-		// 	lastArray.forEach((item, index) => {
-		// 		buttons[index].nextSibling.innerHTML = item;
-		// 	})
-		// } else {
-		// 	lastArray = [
-		// 		"7:00 Saturday",
-		// 		"Friday 5-8",
-		// 		"Saturday 5-9",
-		// 		"Friday 5-8",
-		// 		"Saturday 5-9",
-		// 		"Tuesday 4-25",
-		// 		"Sunday 4-19"
-		// 	];
-		// 	localStorage.setItem('last', JSON.stringify(lastArray));
-		// }
+		//note: everything above works in iphone
+
+		let lastArray;
+		if (localStorage.getItem('last')) {
+			console.log('localStorage already existed');
+			lastArray = JSON.parse(localStorage.getItem('last'));
+			lastArray.forEach((item, index) => {
+				buttons[index].nextSibling.innerHTML = item;
+			})
+		} else {
+			lastArray = [
+				"7:00 Saturday",
+				"Friday 5-8",
+				"Saturday 5-9",
+				"Friday 5-8",
+				"Saturday 5-9",
+				"Tuesday 4-25",
+				"Sunday 4-19"
+			];
+			localStorage.setItem('last', JSON.stringify(lastArray));
+		}
 
 		//event listeners for all the buttons except the first one because the first button has a different format than the others
-		// Object.keys(buttons).forEach(item => {
-		// 	// console.log(item)
-		// 	buttons[item].addEventListener('click', () => {
-		// 		// console.log(buttons[item]);
-		// 		// console.log(buttons[item].nextSibling.innerHTML);
-		// 		let dates = new Date();
-		// 		buttons[item].nextSibling.innerHTML = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
-		// 		lastArray[item] = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
-		// 		localStorage.setItem('last', JSON.stringify(lastArray));
-		// 	})
-		// })
+		Object.keys(buttons).forEach(item => {
+			// console.log(item)
+			buttons[item].addEventListener('click', () => {
+				// console.log(buttons[item]);
+				// console.log(buttons[item].nextSibling.innerHTML);
+				let dates = new Date();
+				buttons[item].nextSibling.innerHTML = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				lastArray[item] = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				localStorage.setItem('last', JSON.stringify(lastArray));
+			})
+		})
 
 		//event listener for the first button
-		// ateButton1.addEventListener('click', () => {
-		// 	let date = new Date();
-		// 	let hour;
-		// 	if (date.getHours() > 12) {
-		// 		hour = date.getHours() - 12;
-		// 	} else {
-		// 		hour = date.getHours();
-		// 	}
-		// 	ateDate1.innerHTML = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
-		// 	lastArray[0] = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
-		// 	localStorage.setItem('last', JSON.stringify(lastArray));
-		// })		
+		ateButton1.addEventListener('click', () => {
+			let date = new Date();
+			let hour;
+			if (date.getHours() > 12) {
+				hour = date.getHours() - 12;
+			} else {
+				hour = date.getHours();
+			}
+			ateDate1.innerHTML = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
+			lastArray[0] = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
+			localStorage.setItem('last', JSON.stringify(lastArray));
+		})		
 
 	</script>
 </body>
