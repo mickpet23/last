@@ -14,7 +14,7 @@
 
 	<button id="ateButton">Ate</button><p id="ateDate">7:00 Saturday</p><br>
 	
-	<button id="showerButton">Shower</button><p id="showerDate">Friday 5-8</p><br>
+	<button>Shower</button><p>Friday 5-8</p><br>
 
 	<button>Water plants</button><p>Saturday 5-9</p><br>
 
@@ -31,10 +31,8 @@
 		const todaysDate = document.getElementsByTagName('p')[0];
 		//TODO: const might be causing issues with dates and code. Naming the variable ateButton causes bugs, naming the variable ateButton809 fixed issues.
 		const ateButton1 = document.getElementById('ateButton');
-		// const ateDate = document.getElementById('ateDate');
-		// const showerButton = document.getElementById('showerButton');
-		// const showerDate = document.getElementById('showerDate');
-		// const buttons = document.getElementsByTagName('button');
+		const ateDate1 = document.getElementById('ateDate');
+		const buttons = document.getElementsByTagName('button');
 		const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 		todaysDate.innerHTML = `Today is ${days[d.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
@@ -73,7 +71,7 @@
 		// })
 
 		//event listener for the first button
-		// ateButton.addEventListener('click', () => {
+		// ateButton1.addEventListener('click', () => {
 		// 	let date = new Date();
 		// 	let hour;
 		// 	if (date.getHours() > 12) {
@@ -81,7 +79,7 @@
 		// 	} else {
 		// 		hour = date.getHours();
 		// 	}
-		// 	ateDate.innerHTML = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
+		// 	ateDate1.innerHTML = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
 		// 	lastArray[0] = `${hour}:${date.getMinutes()} ${days[date.getDay()]}`
 		// 	localStorage.setItem('last', JSON.stringify(lastArray));
 		// })		
