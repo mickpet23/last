@@ -26,6 +26,7 @@
 	<button>Cut hair</button><p>April 19</p><br>
 
 	<script type="text/javascript">
+		//get the present day's date
 		let d = new Date();
 		const todaysDate = document.getElementsByTagName('p')[0];
 		//TODO: const might be causing issues with dates and code. Naming the variable ateButton causes bugs, naming the variable ateButton809 fixed issues.
@@ -40,9 +41,9 @@
 		let lastArray;
 		if (localStorage.getItem('last')) {
 			console.log('localStorage already existed');
-			lastArray = JSON.parse(localStorage.getItem('last'));
+			lastArray = JSON.parse(localStorage.getItem('last')); //translate
 			lastArray.forEach((item, index) => {
-				buttons[index].nextSibling.innerHTML = item;
+				buttons[index].nextSibling.innerHTML = item; //load dates next to buttons
 			})
 		} else {
 			lastArray = [
@@ -53,9 +54,23 @@
 				"Saturday 5 - 9",
 				"Tuesday 4 - 25",
 				"Sunday 4 - 19"
-			];
-			localStorage.setItem('last', JSON.stringify(lastArray));
+			]; //filler values
+			localStorage.setItem('last', JSON.stringify(lastArray)); //set up local storage
 		}
+
+		//generalize confirmPrompt into a function
+		const confirmPromptV2 = (dateInfo, element) => {
+			let confirmPrompt = prompt("The last time was", dateInfo);
+			if (confirmPrompt == null || confirmPrompt == "") {
+				//user hits cancel so don't change anything
+				dateInfo = element.innerHTML;
+				return dateInfo;		
+			} else {
+				//user hits ok so change the data
+				dateInfo = confirmPrompt;
+				return dateInfo;		
+			}
+		} 
 
 		//version2: event listeners for all the buttons except the first one because the first button has a different formate than the others. Filter is used to skip the first button. Have to use Object.keys because buttons is not an array so I can't use a for loop method on it.
 		Object.keys(buttons).filter(ind => ind>=1).forEach(item => {
@@ -63,10 +78,16 @@
 			buttons[item].addEventListener('click', () => {
 				// console.log(buttons[item]);
 				// console.log(buttons[item].nextSibling.innerHTML);
+				//compute new present date
 				let dates = new Date();
-				buttons[item].nextSibling.innerHTML = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				let newDate = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				//prompt user to double check new date 
+				newDate = confirmPromptV2(newDate, buttons[item].nextSibling);
+				// change the innerHTML text to the button and make changes go live
+				buttons[item].nextSibling.innerHTML = newDate;
+				// buttons[item].nextSibling.innerHTML = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
 				//save data to localStorage
-				lastArray[item] = `${days[dates.getDay()]} ${d.getMonth() + 1} - ${d.getDate()}`;
+				lastArray[item] = newDate;
 				localStorage.setItem('last', JSON.stringify(lastArray));
 			})
 		})
@@ -90,6 +111,7 @@
 			}
 			//generate new date and prompt user before submitting
 			let newDate = `${hour}:${minutes} ${days[date.getDay()]}`
+			/*
 			let confirmPrompt = prompt("The last time you ate was", newDate);
 			if (confirmPrompt == null || confirmPrompt == "") {
 				//user hits cancel so don't change anything
@@ -98,7 +120,11 @@
 				//user hits ok so change the data
 				newDate = confirmPrompt;
 			}
+			*/
+			//prompt user to double check new date
+			newDate = confirmPromptV2(newDate, ateDate1);
 			//make changes go live
+			// ateDate1.innerHTML = newDate;
 			ateDate1.innerHTML = newDate;
 			//save data to localStorage
 			lastArray[0] = newDate;
